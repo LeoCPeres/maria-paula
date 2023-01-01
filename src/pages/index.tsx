@@ -1,18 +1,33 @@
 import Head from "next/head";
-import { Flex, Box, Button, Text } from "@chakra-ui/react";
-import { Typewriter as Ty } from "react-simple-typewriter";
+import {
+  Flex,
+  Box,
+  Button,
+  Text,
+  SimpleGrid,
+  Card,
+  CardBody,
+  CardHeader,
+  Heading,
+  Image,
+  keyframes,
+  CardFooter,
+} from "@chakra-ui/react";
+import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import Typewriter from "typewriter-effect";
+import { options } from "./data/options";
 
 const whichStageText = (stage: number) =>
   ({
     1: "Oi, gatinha. Tudo bem? O Léo me mandou te entregar esse recado :)",
     2: "Ele disse que gostou muito do último encontro...",
     3: "E quer muito te ver de novo.",
-    4: "Para isso, ele preparou algumas opções para você escolher.",
+    4: "Para isso, ele preparou algumas opções de date para você escolher.",
     5: "Mas antes... Ele precisa saber se você topa sair com ele no próximo final de semana.",
     6: "E aí, topa?",
     7: "Que bom que você fez a escolha certa :)",
+    8: "Agora, escolha uma das opções de date",
     99: "Você cancelou a ligação do Stitch :(",
   }[stage] as string);
 
@@ -26,6 +41,7 @@ const whichStageImage = (stage: number) =>
     5: "https://media.tenor.com/CodoZtZolJwAAAAC/stitch.gif",
     6: "https://media.tenor.com/CodoZtZolJwAAAAC/stitch.gif",
     7: "https://media.tenor.com/c_tVFX3CxuIAAAAC/stitch-cheer.gif",
+    8: "https://media.tenor.com/oZVbFArqWxAAAAAC/stitch.gif",
     99: "https://www.gifcen.com/wp-content/uploads/2022/09/stitch-gif-12.gif",
   }[stage] as string);
 
@@ -43,6 +59,11 @@ export default function Home() {
     setStage(stage + 1);
     setVisible(false);
     setText(whichStageText(stage + 1));
+
+    if (stage == 8) {
+      setShowOptions(true);
+    }
+
     if (stage + 1 == 6) {
       setIsQuestion(true);
     } else {
@@ -61,6 +82,8 @@ export default function Home() {
     if (text == null) return;
     setScreenSize(window.innerWidth);
 
+    // setText(whichStageText(8));
+
     if (stage == 99) return;
 
     const timer = text.length * 80;
@@ -71,6 +94,16 @@ export default function Home() {
       setVisible(true);
     }, timer);
   }, [stage]);
+
+  const animationKeyframes = keyframes`
+  0% { transform: rotate(0deg); }
+  25% { transform: rotate(5deg); }
+  50% { transform: rotate(0deg); }
+  75% { transform: rotate(-5deg); }
+  100% { transform: rotate(0deg); }
+`;
+
+  const animation = `${animationKeyframes} 2s ease-in-out infinite`;
 
   return (
     <>
@@ -97,144 +130,211 @@ export default function Home() {
         justify="center"
         direction={["column", "row"]}
       >
-        <Box h="300px" mr={["0px", "1rem"]} mb={["2rem", "0px"]}>
-          <img src={whichStageImage(stage)} alt="" width="300px" />
-        </Box>
-        <Flex w="300px" h="230px" direction="column">
-          <Box
-            fontFamily={"JetBrains Mono"}
-            className={
-              screenSize <= 896 ? "bubble grow top" : "bubble grow left"
-            }
-            fontSize={["xs", "md"]}
+        {showOptions ? (
+          <SimpleGrid
+            columns={3}
+            fontFamily="JetBrains Mono"
+            width="70%"
+            gap="1rem"
           >
-            {stage === 0 ? (
-              <Typewriter
-                onInit={(typewriter) => {
-                  typewriter.typeString(text).start();
-                }}
-                options={{ delay: 60 }}
-              />
-            ) : // <Ty words={text} cursor typeSpeed={60} cursorStyle="|" />
-            stage === 1 ? (
-              <>
-                <Text display="none">{stage}</Text>
-                <Typewriter
-                  onInit={(typewriter) => {
-                    typewriter.typeString(text).start();
-                  }}
-                  options={{ delay: 60 }}
-                />
-              </>
-            ) : stage === 2 ? (
-              <>
-                <Typewriter
-                  onInit={(typewriter) => {
-                    typewriter.typeString(text).start();
-                  }}
-                  options={{ delay: 60 }}
-                />
-              </>
-            ) : stage === 3 ? (
-              <>
-                <Text display="none">{stage}</Text>
-                <Typewriter
-                  onInit={(typewriter) => {
-                    typewriter.typeString(text).start();
-                  }}
-                  options={{ delay: 60 }}
-                />
-              </>
-            ) : stage === 4 ? (
-              <>
-                <Typewriter
-                  onInit={(typewriter) => {
-                    typewriter.typeString(text).start();
-                  }}
-                  options={{ delay: 60 }}
-                />
-              </>
-            ) : stage === 5 ? (
-              <>
-                <Text display="none">{stage}</Text>
-                <Typewriter
-                  onInit={(typewriter) => {
-                    typewriter.typeString(text).start();
-                  }}
-                  options={{ delay: 60 }}
-                />
-              </>
-            ) : stage === 6 ? (
-              <>
-                <Typewriter
-                  onInit={(typewriter) => {
-                    typewriter.typeString(text).start();
-                  }}
-                  options={{ delay: 60 }}
-                />
-              </>
-            ) : stage === 7 ? (
-              <>
-                <Text display="none">{stage}</Text>
-                <Typewriter
-                  onInit={(typewriter) => {
-                    typewriter.typeString(text).start();
-                  }}
-                  options={{ delay: 60 }}
-                />
-              </>
-            ) : stage === 99 ? (
-              <>
-                <p style={{ display: "none" }}>{"oi"}</p>
-                <Typewriter
-                  onInit={(typewriter) => {
-                    typewriter.typeString(text).start();
-                  }}
-                  options={{ delay: 60 }}
-                />
-              </>
-            ) : (
-              ""
-            )}
-          </Box>
-          {isQuestion == false && visible == true ? (
-            <Button mt="2rem" onClick={changeText}>
-              Continuar
-            </Button>
-          ) : isQuestion == true && visible == true && stage != 0 ? (
-            <Flex gap="1rem" mt="2rem" direction={["column-reverse", "row"]}>
-              <Button colorScheme="red" w={["100%", "40%"]} disabled>
-                Não :(
-              </Button>
-              <Button
-                colorScheme="green"
-                w={["100%", "60%"]}
-                onClick={changeText}
+            {options.map((option) => {
+              return (
+                <Card border="2px solid black">
+                  <CardHeader textAlign="center">
+                    <Heading size="md" fontFamily="JetBrains Mono">
+                      Opção {option.id}
+                    </Heading>
+                  </CardHeader>
+                  <CardBody
+                    display="flex"
+                    flexDirection="column"
+                    alignItems="center"
+                    justifyContent="center"
+                    mt="-2rem"
+                  >
+                    <Box as={motion.div} animation={animation} mb="2rem">
+                      <Image
+                        src={option.srcImage}
+                        alt=""
+                        width="256px"
+                        h="256px"
+                      />
+                    </Box>
+                    <Text textAlign="center">{option.title}</Text>
+                  </CardBody>
+                  <CardFooter>
+                    <Button
+                      w="100%"
+                      bg="black"
+                      color="white"
+                      colorScheme="none"
+                    >
+                      Quero esse!
+                    </Button>
+                  </CardFooter>
+                </Card>
+              );
+            })}
+          </SimpleGrid>
+        ) : (
+          <>
+            <Box h="300px" mr={["0px", "1rem"]} mb={["2rem", "0px"]}>
+              <img src={whichStageImage(stage)} alt="" width="300px" />
+            </Box>
+            <Flex w="300px" h="230px" direction="column">
+              <Box
+                fontFamily={"JetBrains Mono"}
+                className={
+                  screenSize <= 896 ? "bubble grow top" : "bubble grow left"
+                }
+                fontSize={["xs", "md"]}
               >
-                Sim, topo muito :)
-              </Button>
+                {stage === 0 ? (
+                  <Typewriter
+                    onInit={(typewriter) => {
+                      typewriter.typeString(text).start();
+                    }}
+                    options={{ delay: 60 }}
+                  />
+                ) : // <Ty words={text} cursor typeSpeed={60} cursorStyle="|" />
+                stage === 1 ? (
+                  <>
+                    <Text display="none">{stage}</Text>
+                    <Typewriter
+                      onInit={(typewriter) => {
+                        typewriter.typeString(text).start();
+                      }}
+                      options={{ delay: 60 }}
+                    />
+                  </>
+                ) : stage === 2 ? (
+                  <>
+                    <Typewriter
+                      onInit={(typewriter) => {
+                        typewriter.typeString(text).start();
+                      }}
+                      options={{ delay: 60 }}
+                    />
+                  </>
+                ) : stage === 3 ? (
+                  <>
+                    <Text display="none">{stage}</Text>
+                    <Typewriter
+                      onInit={(typewriter) => {
+                        typewriter.typeString(text).start();
+                      }}
+                      options={{ delay: 60 }}
+                    />
+                  </>
+                ) : stage === 4 ? (
+                  <>
+                    <Typewriter
+                      onInit={(typewriter) => {
+                        typewriter.typeString(text).start();
+                      }}
+                      options={{ delay: 60 }}
+                    />
+                  </>
+                ) : stage === 5 ? (
+                  <>
+                    <Text display="none">{stage}</Text>
+                    <Typewriter
+                      onInit={(typewriter) => {
+                        typewriter.typeString(text).start();
+                      }}
+                      options={{ delay: 60 }}
+                    />
+                  </>
+                ) : stage === 6 ? (
+                  <>
+                    <Typewriter
+                      onInit={(typewriter) => {
+                        typewriter.typeString(text).start();
+                      }}
+                      options={{ delay: 60 }}
+                    />
+                  </>
+                ) : stage === 7 ? (
+                  <>
+                    <Text display="none">{stage}</Text>
+                    <Typewriter
+                      onInit={(typewriter) => {
+                        typewriter.typeString(text).start();
+                      }}
+                      options={{ delay: 60 }}
+                    />
+                  </>
+                ) : stage === 8 ? (
+                  <>
+                    <Typewriter
+                      onInit={(typewriter) => {
+                        typewriter.typeString(text).start();
+                      }}
+                      options={{ delay: 60 }}
+                    />
+                  </>
+                ) : stage === 99 ? (
+                  <>
+                    <p style={{ display: "none" }}>{"oi"}</p>
+                    <Typewriter
+                      onInit={(typewriter) => {
+                        typewriter.typeString(text).start();
+                      }}
+                      options={{ delay: 60 }}
+                    />
+                  </>
+                ) : (
+                  ""
+                )}
+              </Box>
+              {isQuestion == false && visible == true ? (
+                <Button mt="2rem" onClick={changeText}>
+                  Continuar
+                </Button>
+              ) : isQuestion == true && visible == true && stage != 0 ? (
+                <Flex
+                  gap="1rem"
+                  mt="2rem"
+                  direction={["column-reverse", "row"]}
+                >
+                  <Button colorScheme="red" w={["100%", "40%"]} disabled>
+                    Não :(
+                  </Button>
+                  <Button
+                    colorScheme="green"
+                    w={["100%", "60%"]}
+                    onClick={changeText}
+                  >
+                    Sim, topo muito :)
+                  </Button>
+                </Flex>
+              ) : isQuestion == true && visible == true && stage == 0 ? (
+                <Flex
+                  gap="1rem"
+                  mt="2rem"
+                  direction={["column-reverse", "row"]}
+                >
+                  <Button
+                    colorScheme="red"
+                    w={["100%", "40%"]}
+                    onClick={cancelCall}
+                  >
+                    Recusar
+                  </Button>
+                  <Button
+                    colorScheme="green"
+                    w={["100%", "60%"]}
+                    onClick={changeText}
+                  >
+                    Atender
+                  </Button>
+                </Flex>
+              ) : (
+                ""
+              )}
             </Flex>
-          ) : isQuestion == true && visible == true && stage == 0 ? (
-            <Flex gap="1rem" mt="2rem" direction={["column-reverse", "row"]}>
-              <Button
-                colorScheme="red"
-                w={["100%", "40%"]}
-                onClick={cancelCall}
-              >
-                Recusar
-              </Button>
-              <Button
-                colorScheme="green"
-                w={["100%", "60%"]}
-                onClick={changeText}
-              >
-                Atender
-              </Button>
-            </Flex>
-          ) : (
-            ""
-          )}
-        </Flex>
+          </>
+        )}
       </Flex>
     </>
   );
