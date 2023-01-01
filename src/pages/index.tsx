@@ -41,7 +41,7 @@ const whichStageImage = (stage: number) =>
     5: "https://media.tenor.com/CodoZtZolJwAAAAC/stitch.gif",
     6: "https://media.tenor.com/CodoZtZolJwAAAAC/stitch.gif",
     7: "https://media.tenor.com/c_tVFX3CxuIAAAAC/stitch-cheer.gif",
-    8: "https://media.tenor.com/oZVbFArqWxAAAAAC/stitch.gif",
+    8: "https://media.tenor.com/h1qbqS7iQxIAAAAi/stitch-hide.gif",
     99: "https://www.gifcen.com/wp-content/uploads/2022/09/stitch-gif-12.gif",
   }[stage] as string);
 
@@ -82,7 +82,7 @@ export default function Home() {
     if (text == null) return;
     setScreenSize(window.innerWidth);
 
-    // setText(whichStageText(8));
+    //setText(whichStageText(8));
 
     if (stage == 99) return;
 
@@ -125,7 +125,7 @@ export default function Home() {
       </Head>
       <Flex
         w="100%"
-        h={["75vh", "100vh"]}
+        h={["100%", "100vh"]}
         align="center"
         justify="center"
         direction={["column", "row"]}
@@ -134,12 +134,13 @@ export default function Home() {
           <SimpleGrid
             columns={3}
             fontFamily="JetBrains Mono"
-            width="70%"
+            width={["100%", "70%"]}
             gap="1rem"
+            minChildWidth={["240px", "400px"]}
           >
             {options.map((option) => {
               return (
-                <Card border="2px solid black">
+                <Card border="2px solid black" key={option.id}>
                   <CardHeader textAlign="center">
                     <Heading size="md" fontFamily="JetBrains Mono">
                       Opção {option.id}

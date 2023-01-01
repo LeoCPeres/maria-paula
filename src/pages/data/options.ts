@@ -36,6 +36,6 @@ export const options = [
   {
     id: 6,
     srcImage: "https://i.imgur.com/38oKg3y.png",
-    title: "Frangão frito no KFC :)",
+    title: "Franguinho frito no KFC :)",
   },
 ] as optionsProps[];
