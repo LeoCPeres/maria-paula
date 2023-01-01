@@ -113,26 +113,18 @@ export default function Home() {
             className={
               screenSize <= 896 ? "bubble grow top" : "bubble grow left"
             }
+            h="50%"
           >
             {stage === 0 ? (
-              <Typewriter
-                words={text}
-                cursor
-                typeSpeed={60}
-                cursorStyle="|"
-                deleteSpeed={50}
-                delaySpeed={3000}
-              />
+              <Typewriter words={text} cursor typeSpeed={60} cursorStyle="|" />
             ) : stage === 1 ? (
               <>
                 <Text display="none">{stage}</Text>
                 <Typewriter
                   words={text}
                   cursor
-                  cursorStyle="|"
                   typeSpeed={60}
-                  deleteSpeed={50}
-                  delaySpeed={3000}
+                  cursorStyle="|"
                 />
               </>
             ) : stage === 2 ? (
@@ -142,8 +134,6 @@ export default function Home() {
                   cursor
                   cursorStyle="|"
                   typeSpeed={60}
-                  deleteSpeed={50}
-                  delaySpeed={3000}
                 />
               </>
             ) : stage === 3 ? (
@@ -154,8 +144,6 @@ export default function Home() {
                   cursor
                   cursorStyle="|"
                   typeSpeed={60}
-                  deleteSpeed={50}
-                  delaySpeed={3000}
                 />
               </>
             ) : stage === 4 ? (
@@ -165,8 +153,6 @@ export default function Home() {
                   cursor
                   cursorStyle="|"
                   typeSpeed={60}
-                  deleteSpeed={50}
-                  delaySpeed={3000}
                 />
               </>
             ) : stage === 5 ? (
@@ -177,8 +163,6 @@ export default function Home() {
                   cursor
                   cursorStyle="|"
                   typeSpeed={60}
-                  deleteSpeed={50}
-                  delaySpeed={3000}
                 />
               </>
             ) : stage === 6 ? (
@@ -188,8 +172,6 @@ export default function Home() {
                   cursor
                   cursorStyle="|"
                   typeSpeed={60}
-                  deleteSpeed={50}
-                  delaySpeed={3000}
                 />
               </>
             ) : stage === 7 ? (
@@ -200,8 +182,6 @@ export default function Home() {
                   cursor
                   cursorStyle="|"
                   typeSpeed={60}
-                  deleteSpeed={50}
-                  delaySpeed={3000}
                 />
               </>
             ) : stage === 99 ? (
@@ -212,8 +192,6 @@ export default function Home() {
                   cursor
                   cursorStyle="|"
                   typeSpeed={60}
-                  deleteSpeed={50}
-                  delaySpeed={3000}
                 />
               </>
             ) : (
