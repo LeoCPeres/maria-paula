@@ -16,7 +16,7 @@ import {
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import Typewriter from "typewriter-effect";
-import { options } from "./data/options";
+import { options } from "../data/options";
 
 const whichStageText = (stage: number) =>
   ({

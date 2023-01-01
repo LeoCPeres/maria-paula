@@ -1,4 +1,4 @@
-type optionsProps = {
+export type optionsProps = {
   id: number;
   srcImage: string;
   title: string;
