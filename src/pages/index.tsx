@@ -1,21 +1,20 @@
 import Head from "next/head";
 import { Flex, Box, Button, Text } from "@chakra-ui/react";
-import { Typewriter } from "react-simple-typewriter";
+import { Typewriter as Ty } from "react-simple-typewriter";
 import { useEffect, useState } from "react";
+import Typewriter from "typewriter-effect";
 
 const whichStageText = (stage: number) =>
   ({
-    1: ["Oi, gatinha. Tudo bem? O Léo me mandou te entregar esse recado :)"],
-    2: ["Ele disse que gostou muito do último encontro..."],
-    3: ["E quer muito te ver de novo."],
-    4: ["Para isso, ele preparou algumas opções para você escolher."],
-    5: [
-      "Mas antes... Ele precisa saber se você topa sair com ele no próximo final de semana.",
-    ],
-    6: ["E aí, topa?"],
-    7: ["Que bom que você fez a escolha certa :)"],
-    99: ["Você cancelou a ligação do Stitch :("],
-  }[stage] as [""]);
+    1: "Oi, gatinha. Tudo bem? O Léo me mandou te entregar esse recado :)",
+    2: "Ele disse que gostou muito do último encontro...",
+    3: "E quer muito te ver de novo.",
+    4: "Para isso, ele preparou algumas opções para você escolher.",
+    5: "Mas antes... Ele precisa saber se você topa sair com ele no próximo final de semana.",
+    6: "E aí, topa?",
+    7: "Que bom que você fez a escolha certa :)",
+    99: "Você cancelou a ligação do Stitch :(",
+  }[stage] as string);
 
 const whichStageImage = (stage: number) =>
   ({
@@ -31,13 +30,14 @@ const whichStageImage = (stage: number) =>
   }[stage] as string);
 
 export default function Home() {
-  const [text, setText] = useState([
-    "Você está recebendo uma ligação do Stitch...",
-  ]);
+  const [text, setText] = useState(
+    "Você está recebendo uma ligação do Stitch..."
+  );
   const [stage, setStage] = useState(0);
   const [visible, setVisible] = useState(false);
   const [isQuestion, setIsQuestion] = useState(false);
   const [screenSize, setScreenSize] = useState(0);
+  const [showOptions, setShowOptions] = useState(false);
 
   function changeText() {
     setStage(stage + 1);
@@ -63,20 +63,13 @@ export default function Home() {
 
     if (stage == 99) return;
 
-    const timer = text[0].length * 70;
+    const timer = text.length * 80;
     if (stage == 0) {
       setIsQuestion(true);
     }
     setTimeout(() => {
       setVisible(true);
     }, timer);
-
-    // if (stage == 99) {
-    //   setTimeout(() => {
-    //     setVisible(false);
-    //     setStage(0);
-    //   }, 15000);
-    // }
   }, [stage]);
 
   return (
@@ -99,7 +92,7 @@ export default function Home() {
       </Head>
       <Flex
         w="100%"
-        h="100vh"
+        h={["75vh", "100vh"]}
         align="center"
         justify="center"
         direction={["column", "row"]}
@@ -113,85 +106,91 @@ export default function Home() {
             className={
               screenSize <= 896 ? "bubble grow top" : "bubble grow left"
             }
-            h="50%"
+            fontSize={["xs", "md"]}
           >
             {stage === 0 ? (
-              <Typewriter words={text} cursor typeSpeed={60} cursorStyle="|" />
-            ) : stage === 1 ? (
+              <Typewriter
+                onInit={(typewriter) => {
+                  typewriter.typeString(text).start();
+                }}
+                options={{ delay: 60 }}
+              />
+            ) : // <Ty words={text} cursor typeSpeed={60} cursorStyle="|" />
+            stage === 1 ? (
               <>
                 <Text display="none">{stage}</Text>
                 <Typewriter
-                  words={text}
-                  cursor
-                  typeSpeed={60}
-                  cursorStyle="|"
+                  onInit={(typewriter) => {
+                    typewriter.typeString(text).start();
+                  }}
+                  options={{ delay: 60 }}
                 />
               </>
             ) : stage === 2 ? (
               <>
                 <Typewriter
-                  words={text}
-                  cursor
-                  cursorStyle="|"
-                  typeSpeed={60}
+                  onInit={(typewriter) => {
+                    typewriter.typeString(text).start();
+                  }}
+                  options={{ delay: 60 }}
                 />
               </>
             ) : stage === 3 ? (
               <>
                 <Text display="none">{stage}</Text>
                 <Typewriter
-                  words={text}
-                  cursor
-                  cursorStyle="|"
-                  typeSpeed={60}
+                  onInit={(typewriter) => {
+                    typewriter.typeString(text).start();
+                  }}
+                  options={{ delay: 60 }}
                 />
               </>
             ) : stage === 4 ? (
               <>
                 <Typewriter
-                  words={text}
-                  cursor
-                  cursorStyle="|"
-                  typeSpeed={60}
+                  onInit={(typewriter) => {
+                    typewriter.typeString(text).start();
+                  }}
+                  options={{ delay: 60 }}
                 />
               </>
             ) : stage === 5 ? (
               <>
                 <Text display="none">{stage}</Text>
                 <Typewriter
-                  words={text}
-                  cursor
-                  cursorStyle="|"
-                  typeSpeed={60}
+                  onInit={(typewriter) => {
+                    typewriter.typeString(text).start();
+                  }}
+                  options={{ delay: 60 }}
                 />
               </>
             ) : stage === 6 ? (
               <>
                 <Typewriter
-                  words={text}
-                  cursor
-                  cursorStyle="|"
-                  typeSpeed={60}
+                  onInit={(typewriter) => {
+                    typewriter.typeString(text).start();
+                  }}
+                  options={{ delay: 60 }}
                 />
               </>
             ) : stage === 7 ? (
               <>
                 <Text display="none">{stage}</Text>
                 <Typewriter
-                  words={text}
-                  cursor
-                  cursorStyle="|"
-                  typeSpeed={60}
+                  onInit={(typewriter) => {
+                    typewriter.typeString(text).start();
+                  }}
+                  options={{ delay: 60 }}
                 />
               </>
             ) : stage === 99 ? (
               <>
                 <p style={{ display: "none" }}>{"oi"}</p>
                 <Typewriter
-                  words={text}
-                  cursor
-                  cursorStyle="|"
-                  typeSpeed={60}
+                  onInit={(typewriter) => {
+                    typewriter.typeString(text).start();
+                  }}
+                  options={{ delay: 60 }}
                 />
               </>
             ) : (
