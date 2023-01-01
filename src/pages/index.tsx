@@ -12,6 +12,14 @@ import {
   Image,
   keyframes,
   CardFooter,
+  useDisclosure,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
 } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
@@ -28,6 +36,9 @@ const whichStageText = (stage: number) =>
     6: "E aí, topa?",
     7: "Que bom que você fez a escolha certa :)",
     8: "Agora, escolha uma das opções de date",
+    10: "Que legal! Tem certeza que deseja escolher essa opção?",
+    11: "Eba! Agora é só esperar o Léo te ligar para combinar o date :)",
+    12: "Obrigado pela atenção, Ma! Beijos do Stitch :)",
     99: "Você cancelou a ligação do Stitch :(",
   }[stage] as string);
 
@@ -42,6 +53,9 @@ const whichStageImage = (stage: number) =>
     6: "https://media.tenor.com/CodoZtZolJwAAAAC/stitch.gif",
     7: "https://media.tenor.com/c_tVFX3CxuIAAAAC/stitch-cheer.gif",
     8: "https://media.tenor.com/h1qbqS7iQxIAAAAi/stitch-hide.gif",
+    10: "https://i.pinimg.com/originals/1c/e1/02/1ce102d9699ff031af2e1e7b331892d2.gif",
+    11: "https://media.tenor.com/J7rMTU04zHQAAAAC/lilo-and-stitch-stitch.gif",
+    12: "https://media.tenor.com/450SykKtiqcAAAAi/stitch-kiss.gif",
     99: "https://www.gifcen.com/wp-content/uploads/2022/09/stitch-gif-12.gif",
   }[stage] as string);
 
@@ -54,8 +68,48 @@ export default function Home() {
   const [isQuestion, setIsQuestion] = useState(false);
   const [screenSize, setScreenSize] = useState(0);
   const [showOptions, setShowOptions] = useState(false);
+  const [selectedOption, setSelectedOption] = useState(0);
 
-  function changeText() {
+  function changeText(id?: number) {
+    if (stage == 12) {
+      location.reload();
+    }
+    setStage(stage + 1);
+    setVisible(false);
+    setText(whichStageText(stage + 1));
+
+    if (id != null) {
+      setSelectedOption(id);
+      setShowOptions(false);
+      setIsQuestion(true);
+
+      return;
+    }
+
+    if (stage == 8) {
+      setShowOptions(true);
+    }
+
+    if (stage + 1 == 6) {
+      setIsQuestion(true);
+    } else {
+      setIsQuestion(false);
+    }
+  }
+
+  function backToOptions() {
+    setShowOptions(true);
+    setStage(stage - 1);
+  }
+
+  function cancelCall() {
+    setStage(99);
+    setVisible(false);
+    setText(whichStageText(99));
+    setIsQuestion(false);
+  }
+
+  function selectOption() {
     setStage(stage + 1);
     setVisible(false);
     setText(whichStageText(stage + 1));
@@ -71,18 +125,11 @@ export default function Home() {
     }
   }
 
-  function cancelCall() {
-    setStage(99);
-    setVisible(false);
-    setText(whichStageText(99));
-    setIsQuestion(false);
-  }
-
   useEffect(() => {
     if (text == null) return;
     setScreenSize(window.innerWidth);
 
-    //setText(whichStageText(8));
+    // setText(whichStageText(8));
 
     if (stage == 99) return;
 
@@ -169,6 +216,7 @@ export default function Home() {
                       bg="black"
                       color="white"
                       colorScheme="none"
+                      onClick={() => changeText(option.id)}
                     >
                       Quero esse!
                     </Button>
@@ -274,9 +322,38 @@ export default function Home() {
                       options={{ delay: 60 }}
                     />
                   </>
+                ) : stage === 10 ? (
+                  <>
+                    <Text display="none">{stage}</Text>
+                    <Typewriter
+                      onInit={(typewriter) => {
+                        typewriter.typeString(whichStageText(stage)).start();
+                      }}
+                      options={{ delay: 60 }}
+                    />
+                  </>
+                ) : stage === 11 ? (
+                  <>
+                    <Typewriter
+                      onInit={(typewriter) => {
+                        typewriter.typeString(whichStageText(stage)).start();
+                      }}
+                      options={{ delay: 60 }}
+                    />
+                  </>
+                ) : stage === 12 ? (
+                  <>
+                    <Text display="none">{stage}</Text>
+                    <Typewriter
+                      onInit={(typewriter) => {
+                        typewriter.typeString(whichStageText(stage)).start();
+                      }}
+                      options={{ delay: 60 }}
+                    />
+                  </>
                 ) : stage === 99 ? (
                   <>
-                    <p style={{ display: "none" }}>{"oi"}</p>
+                    <Text display="none">{stage}</Text>
                     <Typewriter
                       onInit={(typewriter) => {
                         typewriter.typeString(text).start();
@@ -289,10 +366,13 @@ export default function Home() {
                 )}
               </Box>
               {isQuestion == false && visible == true ? (
-                <Button mt="2rem" onClick={changeText}>
+                <Button mt="2rem" onClick={() => changeText()}>
                   Continuar
                 </Button>
-              ) : isQuestion == true && visible == true && stage != 0 ? (
+              ) : isQuestion == true &&
+                visible == true &&
+                stage != 0 &&
+                stage != 10 ? (
                 <Flex
                   gap="1rem"
                   mt="2rem"
@@ -304,7 +384,7 @@ export default function Home() {
                   <Button
                     colorScheme="green"
                     w={["100%", "60%"]}
-                    onClick={changeText}
+                    onClick={() => changeText()}
                   >
                     Sim, topo muito :)
                   </Button>
@@ -325,9 +405,30 @@ export default function Home() {
                   <Button
                     colorScheme="green"
                     w={["100%", "60%"]}
-                    onClick={changeText}
+                    onClick={() => changeText()}
                   >
                     Atender
+                  </Button>
+                </Flex>
+              ) : isQuestion == true && visible == true && stage == 10 ? (
+                <Flex
+                  gap="1rem"
+                  mt="2rem"
+                  direction={["column-reverse", "row"]}
+                >
+                  <Button
+                    colorScheme="red"
+                    w={["100%", "40%"]}
+                    onClick={backToOptions}
+                  >
+                    Voltar
+                  </Button>
+                  <Button
+                    colorScheme="green"
+                    w={["100%", "60%"]}
+                    onClick={() => selectOption()}
+                  >
+                    Sim!
                   </Button>
                 </Flex>
               ) : (
