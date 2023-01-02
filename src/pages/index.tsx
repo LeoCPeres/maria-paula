@@ -25,6 +25,8 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import Typewriter from "typewriter-effect";
 import { options } from "../data/options";
+import { setDoc, doc } from "firebase/firestore";
+import { db } from "../services/firebase";
 
 const whichStageText = (stage: number) =>
   ({
@@ -69,6 +71,7 @@ export default function Home() {
   const [screenSize, setScreenSize] = useState(0);
   const [showOptions, setShowOptions] = useState(false);
   const [selectedOption, setSelectedOption] = useState(0);
+  const [selectedTitle, setSelectedTitle] = useState("");
 
   function changeText(id?: number) {
     if (stage == 12) {
@@ -82,7 +85,7 @@ export default function Home() {
       setSelectedOption(id);
       setShowOptions(false);
       setIsQuestion(true);
-
+      setSelectedTitle(options.filter((x) => x.id == id)[0].title);
       return;
     }
 
@@ -109,20 +112,21 @@ export default function Home() {
     setIsQuestion(false);
   }
 
-  function selectOption() {
+  async function selectOption() {
     setStage(stage + 1);
+    console.log(stage + 1);
     setVisible(false);
+    setIsQuestion(false);
     setText(whichStageText(stage + 1));
 
-    if (stage == 8) {
-      setShowOptions(true);
-    }
+    const uid = Math.floor(Math.random() * 100000).toString();
+    const date = new Date();
 
-    if (stage + 1 == 6) {
-      setIsQuestion(true);
-    } else {
-      setIsQuestion(false);
-    }
+    await setDoc(doc(db, "/options", uid), {
+      date: date,
+      option: selectedOption,
+      title: selectedTitle,
+    });
   }
 
   useEffect(() => {
